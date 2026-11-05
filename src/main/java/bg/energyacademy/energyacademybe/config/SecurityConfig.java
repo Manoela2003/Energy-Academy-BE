@@ -24,14 +24,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Disable CSRF for REST APIs
-                .cors(Customizer.withDefaults()) // Enable CORS
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless for JWT
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // CRITICAL: Allow browser preflight OPTIONS requests
-                        .requestMatchers("/api/auth/**").permitAll() // Allow all endpoints under /api/auth/ (register, login)
-                        .anyRequest().authenticated() // Everything else requires a token
-                );
+            .csrf(csrf -> csrf.disable()) // Disable CSRF for REST APIs
+            .cors(Customizer.withDefaults()) // Enable CORS
+            .sessionManagement(
+                session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless for JWT
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.OPTIONS, "/**")
+                .permitAll() // CRITICAL: Allow browser preflight OPTIONS requests
+                .requestMatchers("/api/auth/**").permitAll() // Allow all endpoints under /api/auth/ (register, login)
+                .requestMatchers(HttpMethod.GET, "/api/content/**").permitAll()
+                .anyRequest().authenticated() // Everything else requires a token
+            );
 
         return http.build();
     }
