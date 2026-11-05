@@ -30,7 +30,7 @@ public class SiteContentController {
     }
 
     @PutMapping("/{key}")
-    public ResponseEntity<SiteContent> updateContent(@PathVariable String key, @RequestBody Map<String, String> body) {
+    public ResponseEntity<SiteContent> updateContent(@PathVariable("key") String key, @RequestBody Map<String, String> body) {
         String newValue = body.get("contentValue");
 
         Optional<SiteContent> existing = repository.findByContentKey(key);
