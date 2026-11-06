@@ -39,6 +39,9 @@ public class JWTServiceImpl implements JWTService {
     public String generateToken(User user) {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("firstName", user.getFirstName());
+        extraClaims.put("lastName", user.getLastName());
+        extraClaims.put("role", user.getRole().getRoleValue());
+        extraClaims.put("phone", user.getPhoneNumber());
 
         return Jwts.builder()
             .setClaims(extraClaims)
