@@ -6,6 +6,7 @@ import bg.energyacademy.energyacademybe.entity.User;
 import bg.energyacademy.energyacademybe.entity.UserRole;
 import bg.energyacademy.energyacademybe.exception.DuplicateEmailException;
 import bg.energyacademy.energyacademybe.exception.DuplicateUsernameException;
+import bg.energyacademy.energyacademybe.exception.ObjectNotFoundException;
 import bg.energyacademy.energyacademybe.repository.UserRepository;
 import bg.energyacademy.energyacademybe.service.JWTService;
 import bg.energyacademy.energyacademybe.service.UserService;
@@ -17,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -96,5 +98,31 @@ public class UserServiceImpl implements UserService {
         }
 
         return jwtService.generateToken(user);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("user"));
+        userRepository.delete(user);
+    }
+
+    @Override
+    public User updateUser(Long id, User updatedData) {
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new ObjectNotFoundException("Потребителят"));
+
+        user.setFirstName(updatedData.getFirstName());
+        user.setLastName(updatedData.getLastName());
+        user.setEmail(updatedData.getEmail());
+        user.setPhoneNumber(updatedData.getPhoneNumber());
+        user.setRole(updatedData.getRole());
+
+        userRepository.save(user);
+        return user;
     }
 }
