@@ -1,6 +1,7 @@
 package bg.energyacademy.energyacademybe.service;
 
 
+import bg.energyacademy.energyacademybe.dto.AdminStatsDTO;
 import bg.energyacademy.energyacademybe.dto.LoginDTO;
 import bg.energyacademy.energyacademybe.dto.UserDTO;
 import bg.energyacademy.energyacademybe.entity.User;

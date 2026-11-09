@@ -1,7 +1,9 @@
 package bg.energyacademy.energyacademybe.web;
 
+import bg.energyacademy.energyacademybe.dto.AdminStatsDTO;
 import bg.energyacademy.energyacademybe.entity.User;
 import bg.energyacademy.energyacademybe.exception.ObjectNotFoundException;
+import bg.energyacademy.energyacademybe.service.AdminService;
 import bg.energyacademy.energyacademybe.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -25,13 +27,16 @@ import java.util.List;
 public class AdminController {
 
     private final UserService userService;
+    private final AdminService adminService;
     private final String superAdminEmail;
 
     public AdminController(
         UserService userService,
+        AdminService adminService,
         @Value("${admin.email}") String superAdminEmail
     ) {
         this.userService = userService;
+        this.adminService = adminService;
         this.superAdminEmail = superAdminEmail;
     }
 
@@ -63,5 +68,10 @@ public class AdminController {
     public ResponseEntity<?> updateUser(@PathVariable("id") Long id, @RequestBody User updatedData) {
         User user = userService.updateUser(id, updatedData);
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/stats")
+    public ResponseEntity<AdminStatsDTO> getDashboardStats() {
+        return ResponseEntity.ok(adminService.getStats());
     }
 }
