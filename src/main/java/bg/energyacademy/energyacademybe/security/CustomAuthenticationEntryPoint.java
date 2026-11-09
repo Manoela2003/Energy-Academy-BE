@@ -15,6 +15,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         response.setContentType("application/json;charset=UTF-8");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().write("{\"error\": \"Unauthorized (401)\", \"message\": \"Липсва или е невалиден JWT токен. Моля, влезте отново в профила си.\"}");
+        response.getWriter().write("{\"error\": \"Unauthorized (401)\", \"message\": \"Изтекла сесия. Моля, влезте отново в профила си.\"}");
     }
 }
